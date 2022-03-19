@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Node-Express Server with MongoDb as Database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Konu9712/VedPay_BackEnd.git"
+  },
+  "author": "Konark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Konu9712/VedPay_BackEnd/issues"
+  },
+  "homepage": "https://github.com/Konu9712/VedPay_BackEnd#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
+  }
+}
