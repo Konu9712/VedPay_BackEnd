@@ -8,7 +8,7 @@ class AuthService {
     const { email, name, phoneNumber, password } = obj;
 
     const userId = await common.getuniqueId();
-    const token = jwt.sign({ email_id: email }, Key.parsed.TOKEN_KEY, {
+    const token = jwt.sign({ email, name, phoneNumber }, Key.parsed.TOKEN_KEY, {
       expiresIn: "20d", // expires in 20 days
     });
     const user = new User({
@@ -24,23 +24,25 @@ class AuthService {
   };
 
   loginUser = async (obj) => {
-    const { email, password, userId } = obj;
-
-    const userExist = await User.findOne({ email: email });
+    const { phoneNumber, password } = obj;
+    const userExist = await User.findOne({ phoneNumber: phoneNumber });
     if (userExist) {
       if (userExist.password === password) {
-        if (userExist.userId === userId) {
-          const filter = { userId: userId };
-          const token = jwt.sign({ email_id: email }, Key.parsed.TOKEN_KEY, {
-            expiresIn: "20d", // expires in 20 days
-          });
-          const update = { token: token };
-          let updatedUser = await User.findOneAndUpdate(filter, update, {
-            new: true,
-          });
-          return updatedUser;
-        }
-        return false;
+        const tokenPayload = {
+          email: userExist.email,
+          name: userExist.name,
+          phoneNumber: userExist.phoneNumber,
+        };
+        const token = jwt.sign(tokenPayload, Key.parsed.TOKEN_KEY, {
+          expiresIn: "20d", // expires in 20 days
+        });
+        const update = { token: token };
+        let updatedUser = await User.findOneAndUpdate(
+          userExist.userId,
+          update,
+          { new: true }
+        );
+        return updatedUser;
       }
       return false;
     }
