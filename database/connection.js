@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Key = require("dotenv").config();
-const DB = Key.parsed.DB_KEY;
+const DB = process.env.DB_KEY;
 mongoose.connect(
   DB,
   {
