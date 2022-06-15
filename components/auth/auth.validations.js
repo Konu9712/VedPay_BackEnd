@@ -9,13 +9,13 @@ class AuthenticationValidator {
     const { name, email, password, phoneNumber } = req.body;
 
     if (isEmpty(name)) {
-      errors.name = "Name is required";
+      errors.error = "Name is required";
     } else if (isEmpty(email)) {
-      errors.email = "Email is required";
+      errors.error = "Email is required";
     } else if (isEmpty(password)) {
-      errors.password = "Password is required";
+      errors.error = "Password is required";
     } else if (isEmpty(phoneNumber)) {
-      errors.phoneNumber = "Phone Number is required";
+      errors.error = "Phone Number is required";
     }
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({
@@ -35,14 +35,12 @@ class AuthenticationValidator {
    */
   login(req, res, next) {
     const errors = {};
-    const { email, password, userId } = req.body;
+    const { phoneNumber, password } = req.body;
 
-    if (isEmpty(email)) {
-      errors.email = "Email is required";
+    if (isEmpty(phoneNumber)) {
+      errors.error = "Phone Number is required";
     } else if (isEmpty(password)) {
-      errors.password = "Password is required";
-    } else if (isEmpty(userId)) {
-      errors.userId = "User Id is required";
+      errors.error = "Password is required";
     }
 
     if (Object.keys(errors).length > 0) {

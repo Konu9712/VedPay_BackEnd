@@ -24,6 +24,10 @@ const userSechma = new mongoose.Schema({
     type: String,
     required: true,
   },
+  biometric: {
+    type: String,
+    // required: true,
+  },
   token: {
     type: String,
     required: true,

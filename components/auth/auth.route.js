@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const AuthController = require("./auth.controller");
 const AuthValidations = require("./auth.validations");
+
+router.post("/test", (req, res) => {
+  res.json({ message: "server is Running" });
+});
+
 /**
  * @route POST api/auth/signup-new
  * @description Sign up User
