@@ -2,7 +2,7 @@ const { isEmpty } = require("../../validatorFunction/validator");
 
 class CardValidator {
   /**
-   * @description Validate Sign in
+   * @description Add Card in DB
    */
   addCard(req, res, next) {
     const errors = {};
@@ -25,6 +25,30 @@ class CardValidator {
       errors.error = "Name on the Card is required";
     } else if (isEmpty(type)) {
       errors.error = "Type of Card is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        status: "error",
+        message: errors[Object.keys(errors)[0]],
+        errors: {
+          ...errors,
+        },
+      });
+    } else {
+      next();
+    }
+  }
+
+  /**
+   * @description Get card List from DB
+   */
+  cardlList(req, res, next) {
+    const errors = {};
+    const { userId } = req.params;
+
+    if (isEmpty(userId)) {
+      errors.error = "UserId is required";
     }
 
     if (Object.keys(errors).length > 0) {

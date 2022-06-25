@@ -13,4 +13,14 @@ router.post("/:userId/addCard", CardValidations.addCard, (req, res) => {
   CardController.addCard(req, res);
 });
 
+/**
+ * @route GET api/card/:userId/cardList
+ * @description Get card list from DB
+ * @returns JSON
+ * @access public
+ */
+router.get("/:userId/cardlList", CardValidations.cardlList, (req, res) => {
+  CardController.cardlList(req, res);
+});
+
 module.exports = router;

@@ -32,6 +32,16 @@ class CardService {
     });
     return cardDetails;
   };
+
+  cardlList = async (cardSechma) => {
+    let { allCards } = cardSechma;
+    const newList = JSON.parse(JSON.stringify(allCards));
+
+    newList.forEach((card) => {
+      delete card.cardTransctions;
+    });
+    return newList;
+  };
 }
 const cardService = new CardService();
 module.exports = cardService;
