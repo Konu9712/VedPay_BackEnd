@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Key = require("dotenv").config();
 const User = require("../../database/Sechma/userSechma");
 const common = require("../../helper/common");
+const Card = require("../../database/Sechma/cardSechma");
 class AuthService {
   addNewUser = async (obj) => {
     const { email, name, phoneNumber, password } = obj;
@@ -23,6 +24,9 @@ class AuthService {
       userId,
       token,
     });
+
+    const card = new Card({ userId });
+    await card.save();
     await user.save();
     return user;
   };
