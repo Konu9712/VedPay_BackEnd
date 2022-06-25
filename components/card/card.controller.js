@@ -58,6 +58,50 @@ class CardController {
       return res.status(400).json({ error: e });
     }
   }
+
+  /**
+   * @description  Get Card List
+   */
+  async cardlList(req, res) {
+    try {
+      const errors = {};
+      const { userId } = req.params;
+
+      const userUserSechma = await User.findOne({ userId: userId });
+      const userCardSechma = await Card.findOne({ userId: userId });
+
+      if (isEmpty(userUserSechma) || isEmpty(userCardSechma)) {
+        errors.error = "Invalid User";
+      }
+
+      // Return Errors
+      if (Object.keys(errors).length > 0) {
+        return res.status(400).json({
+          status: "error",
+          message: errors[Object.keys(errors)[0]],
+          errors: {
+            ...errors,
+          },
+        });
+      }
+
+      const cardList = await cardService.cardlList(userCardSechma);
+      if (cardList) {
+        return res.status(200).json({
+          message: "ok",
+          data: "Card List",
+          cardList: cardList,
+        });
+      } else {
+        return res.status(400).json({
+          error: "Bad Request",
+        });
+      }
+    } catch (e) {
+      console.log("e", e);
+      return res.status(400).json({ error: e });
+    }
+  }
 }
 
 const cardController = new CardController();
