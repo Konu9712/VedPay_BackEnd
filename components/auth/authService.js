@@ -10,7 +10,7 @@ class AuthService {
 
     const userId = await common.getuniqueId();
     const token = jwt.sign(
-      { email, name, phoneNumber },
+      { email, name, phoneNumber, userId },
       process.env.TOKEN_KEY,
       {
         expiresIn: "20d", // expires in 20 days
@@ -40,6 +40,7 @@ class AuthService {
           email: userExist.email,
           name: userExist.name,
           phoneNumber: userExist.phoneNumber,
+          userId: userExist.userId,
         };
         const token = jwt.sign(tokenPayload, process.env.TOKEN_KEY, {
           expiresIn: "20d", // expires in 20 days
