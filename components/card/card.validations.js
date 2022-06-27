@@ -63,6 +63,33 @@ class CardValidator {
       next();
     }
   }
+
+  /**
+   * @description Delete card from DB
+   */
+  deleteCard(req, res, next) {
+    const errors = {};
+    const { userId, cardId } = req.params;
+
+    if (isEmpty(userId)) {
+      errors.error = "UserId is required";
+    }
+    if (isEmpty(cardId)) {
+      errors.error = "CardId is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        status: "error",
+        message: errors[Object.keys(errors)[0]],
+        errors: {
+          ...errors,
+        },
+      });
+    } else {
+      next();
+    }
+  }
 }
 
 const validationObj = new CardValidator();

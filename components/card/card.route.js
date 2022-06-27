@@ -23,4 +23,18 @@ router.get("/:userId/cardlList", CardValidations.cardlList, (req, res) => {
   CardController.cardlList(req, res);
 });
 
+/**
+ * @route Delete api/card/:userId/deleteCard/:cardId
+ * @description Delete card list from DB
+ * @returns JSON
+ * @access public
+ */
+router.delete(
+  "/:userId/deleteCard/:cardId",
+  CardValidations.deleteCard,
+  (req, res) => {
+    CardController.deleteCard(req, res);
+  }
+);
+
 module.exports = router;
