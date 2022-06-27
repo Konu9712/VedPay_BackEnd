@@ -42,6 +42,27 @@ class CardService {
     });
     return newList;
   };
+
+  deleteCard = async (userId, cardId) => {
+    const result = await Card.updateOne(
+      { userId: userId },
+      { $pull: { allCards: { cardId: cardId } } },
+      { safe: true, multi: true, returnDocument: "after" }
+    )
+      .exec()
+      .then(function (response) {
+        if (response.modifiedCount === 1) {
+          console.log(`User:- ${userId} deleted a card, card ID:- ${cardId}`);
+          return true;
+        } else {
+          console.log(
+            `Error in deleting card of user:- ${userId} card ID:- ${cardId}`
+          );
+          return false;
+        }
+      });
+    return result;
+  };
 }
 const cardService = new CardService();
 module.exports = cardService;

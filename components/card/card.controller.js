@@ -50,7 +50,7 @@ class CardController {
         });
       } else {
         return res.status(400).json({
-          error: "Bad Request",
+          error: "Unable to Add Card",
         });
       }
     } catch (e) {
@@ -94,7 +94,62 @@ class CardController {
         });
       } else {
         return res.status(400).json({
-          error: "Bad Request",
+          error: "Unable to get Card List",
+        });
+      }
+    } catch (e) {
+      console.log("e", e);
+      return res.status(400).json({ error: e });
+    }
+  }
+
+  /**
+   * @description  Delete Card From List
+   */
+  async deleteCard(req, res) {
+    try {
+      const errors = {};
+      const { userId, cardId } = req.params;
+
+      const userUserSechma = await User.findOne({ userId: userId });
+      const userCardSechma = await Card.findOne({ userId: userId });
+
+      if (isEmpty(userUserSechma) || isEmpty(userCardSechma)) {
+        errors.error = "Invalid User";
+      }
+
+      if (isEmpty(userCardSechma.allCards)) {
+        errors.error = "No card to delete in your Wallet";
+      }
+
+      const deleteCard = userCardSechma.allCards.find(
+        (card) => card.cardId === cardId
+      );
+      if (!deleteCard) {
+        errors.error = "Invalid Card";
+      }
+
+      // Return Errors
+      if (Object.keys(errors).length > 0) {
+        return res.status(400).json({
+          status: "error",
+          message: errors[Object.keys(errors)[0]],
+          errors: {
+            ...errors,
+          },
+        });
+      }
+
+      const result = await cardService.deleteCard(userId, cardId);
+      if (result) {
+        return res.status(200).json({
+          message: "ok",
+          data: "Card Deleted",
+          deletedCard: deleteCard,
+        });
+      } else {
+        return res.status(400).json({
+          error: "Error in Deleteing Card",
         });
       }
     } catch (e) {
