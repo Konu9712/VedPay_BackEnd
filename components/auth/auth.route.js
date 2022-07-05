@@ -27,4 +27,18 @@ router.post("/login", AuthValidations.login, (req, res) => {
   AuthController.login(req, res);
 });
 
+/**
+ * @route GET api/auth/totalBalance
+ * @description Get User Total Balance
+ * @returns JSON
+ * @access public
+ */
+router.get(
+  "/:userId/totalBalance",
+  AuthValidations.totalBalance,
+  (req, res) => {
+    AuthController.totalBalance(req, res);
+  }
+);
+
 module.exports = router;

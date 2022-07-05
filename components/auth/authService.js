@@ -62,6 +62,14 @@ class AuthService {
     }
     return false;
   };
+
+  totalBalance = async (userExisted) => {
+    if (userExisted.totalBalance) {
+      return userExisted.totalBalance;
+    } else {
+      return false;
+    }
+  };
 }
 const authService = new AuthService();
 module.exports = authService;

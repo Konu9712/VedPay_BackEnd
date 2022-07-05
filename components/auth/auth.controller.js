@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const authService = require("./authService");
 const User = require("../../database/Sechma/userSechma");
-const { isEmail } = require("../../validatorFunction/validator");
+const { isEmail, isEmpty } = require("../../validatorFunction/validator");
 
 class AuthController {
   /**
@@ -80,6 +80,44 @@ class AuthController {
         });
       } else {
         errors.error = "Wrong Credentials";
+      }
+
+      // Return Errors
+      return res.status(400).json({
+        status: "error",
+        message: errors[Object.keys(errors)[0]],
+        errors: {
+          ...errors,
+        },
+      });
+    } catch (e) {
+      console.log("e", e);
+      return res.status(400).json({ error: e });
+    }
+  }
+
+  /**
+   * @description Get Total Balance
+   */
+  async totalBalance(req, res) {
+    try {
+      const errors = {};
+      const { userId } = req.params;
+
+      const userExisted = await User.findOne({ userId: userId });
+      if (isEmpty(userExisted)) {
+        errors.error = "Invalid User";
+      } else {
+        const result = await authService.totalBalance(userExisted);
+        if (result) {
+          return res.status(200).json({
+            message: "ok",
+            data: "Total balance",
+            totalBalance: result,
+          });
+        } else {
+          errors.error = "Could not find User";
+        }
       }
 
       // Return Errors
