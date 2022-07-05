@@ -4,6 +4,7 @@ const Key = require("dotenv").config();
 const User = require("../../database/Sechma/userSechma");
 const common = require("../../helper/common");
 const Card = require("../../database/Sechma/cardSechma");
+const GlobalTransactionSechma = require("../../database/Sechma/globalTransactionSechma");
 class AuthService {
   addNewUser = async (obj) => {
     const { email, name, phoneNumber, password } = obj;
@@ -23,9 +24,13 @@ class AuthService {
       password,
       userId,
       token,
+      totalBalance: 0,
     });
 
     const card = new Card({ userId });
+    const transaction = GlobalTransactionSechma({ userId });
+
+    await transaction.save();
     await card.save();
     await user.save();
     return user;

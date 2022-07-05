@@ -29,6 +29,10 @@ const userSechma = new mongoose.Schema({
     type: String,
     required: true,
   },
+  totalBalance: {
+    type: Number,
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSechma);
