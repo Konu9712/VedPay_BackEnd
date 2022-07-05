@@ -55,6 +55,30 @@ class AuthenticationValidator {
       next();
     }
   }
+
+  /**
+   * @description Get total Balance
+   */
+  totalBalance(req, res, next) {
+    const errors = {};
+    const { userId } = req.params;
+
+    if (isEmpty(userId)) {
+      errors.error = "UserId is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        status: "error",
+        message: errors[Object.keys(errors)[0]],
+        errors: {
+          ...errors,
+        },
+      });
+    } else {
+      next();
+    }
+  }
 }
 
 const validationObj = new AuthenticationValidator();
