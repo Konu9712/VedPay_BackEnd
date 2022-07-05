@@ -34,7 +34,7 @@ const cardSechma = new mongoose.Schema({
       cardTransctions: [
         {
           to: {
-            type: Number,
+            type: String,
             required: true,
             trim: true,
           },
@@ -52,7 +52,7 @@ const cardSechma = new mongoose.Schema({
             required: true,
           },
           status: {
-            type: Boolean,
+            type: String,
             required: true,
           },
         },
