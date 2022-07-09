@@ -92,7 +92,7 @@ class ImMoneyService {
           }
         });
     if (cardSechma && userSechma && globalTransactionSechma) {
-      return userSechma;
+      return newGlobalTransaction;
     } else {
       return false;
     }
