@@ -57,7 +57,7 @@ class InMoneyController {
           message: "ok",
           data: "Money added successfully",
           addedAmount: amount,
-          totalAmount: result.totalBalance,
+          result: result,
         });
       } else {
         return res.status(400).json({
