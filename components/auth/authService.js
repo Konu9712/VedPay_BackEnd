@@ -64,7 +64,7 @@ class AuthService {
   };
 
   totalBalance = async (userExisted) => {
-    if (userExisted.totalBalance) {
+    if (userExisted.totalBalance > -1) {
       return userExisted.totalBalance;
     } else {
       return false;

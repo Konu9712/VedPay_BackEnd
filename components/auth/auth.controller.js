@@ -109,7 +109,7 @@ class AuthController {
         errors.error = "Invalid User";
       } else {
         const result = await authService.totalBalance(userExisted);
-        if (result) {
+        if (result > -1) {
           return res.status(200).json({
             message: "ok",
             data: "Total balance",
