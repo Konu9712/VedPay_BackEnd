@@ -45,9 +45,9 @@ class OutMoneyController {
       if (result) {
         return res.status(200).json({
           message: "ok",
-          data: "Money added successfully",
+          data: "Money transferred successfully",
           amountTransfered: amount,
-          result: result,
+          reciver: receiverPhoneNumber,
         });
       } else {
         return res.status(400).json({
