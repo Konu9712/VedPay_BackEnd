@@ -52,7 +52,7 @@ class AuthService {
         });
         const update = { token: token };
         let updatedUser = await User.findOneAndUpdate(
-          userExist.userId,
+          { userId: userExist.userId },
           update,
           { new: true }
         );

@@ -3,27 +3,26 @@ const Card = require("../../database/Sechma/cardSechma");
 const GlobalTransactionSechma = require("../../database/Sechma/globalTransactionSechma");
 const User = require("../../database/Sechma/userSechma");
 const { isEmpty } = require("../../validatorFunction/validator");
-const outMoneyService = require("./outService");
+const transactionService = require("./transactionService");
 
-class OutMoneyController {
+class TransactionController {
   /**
-   * @description   Transfer money from one Account to another
+   * @description   Get transaction list between user and its contact
    */
-  async outMoney(req, res) {
+  async transactionContact(req, res) {
     try {
       const errors = {};
-      const { amount, receiverPhoneNumber } = req.body;
-      const { userId } = req.params;
+      const { userId, contactNumber } = req.params;
 
       const userUserSechma = await User.findOne({ userId: userId });
-      const reciver = await User.findOne({ phoneNumber: receiverPhoneNumber });
+      const contactSechma = await User.findOne({
+        phoneNumber: contactNumber,
+      });
 
       if (isEmpty(userUserSechma)) {
         errors.error = "Invalid User";
-      } else if (isEmpty(reciver)) {
-        errors.error = `${receiverPhoneNumber} is not a VedPay user`;
-      } else if (userUserSechma.totalBalance < amount) {
-        errors.error = `You does not have appropriate balance`;
+      } else if (isEmpty(contactSechma)) {
+        errors.error = `${contactNumber} is not a VedPay user`;
       }
 
       // Return Errors
@@ -37,17 +36,15 @@ class OutMoneyController {
         });
       }
 
-      const result = await outMoneyService.outMoney(
+      const result = await transactionService.transactionContact(
         userId,
-        reciver.userId,
-        amount
+        contactSechma.userId
       );
-      if (result) {
+      if (true) {
         return res.status(200).json({
           message: "ok",
-          data: "Money transferred successfully",
-          amountTransfered: amount,
-          reciver: receiverPhoneNumber,
+          data: "History",
+          transactionHistory: result,
         });
       } else {
         return res.status(400).json({
@@ -61,5 +58,5 @@ class OutMoneyController {
   }
 }
 
-const outMoneyController = new OutMoneyController();
-module.exports = outMoneyController;
+const transactionController = new TransactionController();
+module.exports = transactionController;
