@@ -4,7 +4,7 @@ const GlobalTransactionSechma = require("../../database/Sechma/globalTransaction
 const common = require("../../helper/common");
 
 class OutMoneyService {
-  outMoney = async (userId, receiverPhoneNumber, amount) => {
+  outMoney = async (userId, reciverId, amount) => {
     //
     // Update total Balance in userSechma
     //
@@ -17,12 +17,12 @@ class OutMoneyService {
       .then(function (response) {
         if (response) {
           console.log(
-            `User:- ${userId} transefered ${amount} from wallet to ${receiverPhoneNumber} [in User]`
+            `User:- ${userId} transefered ${amount} from wallet to ${reciverId} [in User]`
           );
           return response;
         } else {
           console.log(
-            `Error in transfering money ${amount} from User:- ${userId} to  ${receiverPhoneNumber} [in User]`
+            `Error in transfering money ${amount} from User:- ${userId} to  ${reciverId} [in User]`
           );
           return false;
         }
@@ -33,7 +33,7 @@ class OutMoneyService {
     //
 
     const reciverSechma = await User.findOneAndUpdate(
-      { phoneNumber: receiverPhoneNumber },
+      { userId: reciverId },
       { $inc: { totalBalance: amount } },
       { new: true }
     )
@@ -41,12 +41,12 @@ class OutMoneyService {
       .then(function (response) {
         if (response) {
           console.log(
-            `User:- ${userId} transefered ${amount} from wallet to ${receiverPhoneNumber} [in Reciver]`
+            `User:- ${userId} transefered ${amount} from wallet to ${reciverId} [in Reciver]`
           );
           return response;
         } else {
           console.log(
-            `Error in transfering money ${amount} from User:- ${userId} to  ${receiverPhoneNumber} [in Reciver]`
+            `Error in transfering money ${amount} from User:- ${userId} to  ${reciverId} [in Reciver]`
           );
           return false;
         }
@@ -76,12 +76,12 @@ class OutMoneyService {
         .then(function (response) {
           if (response) {
             console.log(
-              `User:- ${userId} transefered ${amount} from wallet to ${receiverPhoneNumber} [user Transaction Sechma]`
+              `User:- ${userId} transefered ${amount} from wallet to ${reciverId} [user Transaction Sechma]`
             );
             return response;
           } else {
             console.log(
-              `Error in transfering money ${amount} from User:- ${userId} to  ${receiverPhoneNumber} [user Transaction Sechma]`
+              `Error in transfering money ${amount} from User:- ${userId} to  ${reciverId} [user Transaction Sechma]`
             );
             return false;
           }
@@ -93,7 +93,7 @@ class OutMoneyService {
 
     const reciverglobalTransactionSechma =
       await GlobalTransactionSechma.findOneAndUpdate(
-        { phoneNumber: receiverPhoneNumber },
+        { userId: reciverId },
         { $push: { transactionHistory: newGlobalTransaction } },
         { new: true }
       )
@@ -101,16 +101,17 @@ class OutMoneyService {
         .then(function (response) {
           if (response) {
             console.log(
-              `User:- ${userId} transefered ${amount} from wallet to ${receiverPhoneNumber} [user Transaction Sechma]`
+              `User:- ${userId} transefered ${amount} from wallet to ${reciverId} [reciver Transaction Sechma]`
             );
             return response;
           } else {
             console.log(
-              `Error in transfering money ${amount} from User:- ${userId} to  ${receiverPhoneNumber} [user Transaction Sechma]`
+              `Error in transfering money ${amount} from User:- ${userId} to  ${reciverId} [reciver Transaction Sechma]`
             );
             return false;
           }
         });
+
     if (
       userSechma &&
       reciverSechma &&
