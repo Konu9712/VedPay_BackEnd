@@ -56,6 +56,49 @@ class TransactionController {
       return res.status(400).json({ error: e });
     }
   }
+
+  /**
+   * @description  Get latest 30 transactions list of user
+   */
+  async transactionGlobal(req, res) {
+    try {
+      const errors = {};
+      const { userId } = req.params;
+
+      const userUserSechma = await User.findOne({ userId: userId });
+      if (isEmpty(userUserSechma)) {
+        errors.error = "Invalid User";
+      }
+
+      // Return Errors
+      if (Object.keys(errors).length > 0) {
+        return res.status(400).json({
+          status: "error",
+
+          message: errors[Object.keys(errors)[0]],
+          errors: {
+            ...errors,
+          },
+        });
+      }
+
+      const result = await transactionService.transactionGlobal(userId);
+      if (true) {
+        return res.status(200).json({
+          message: "ok",
+          data: "History",
+          transactionHistory: result,
+        });
+      } else {
+        return res.status(400).json({
+          error: "Error in loading Money",
+        });
+      }
+    } catch (e) {
+      console.log("e", e);
+      return res.status(400).json({ error: e });
+    }
+  }
 }
 
 const transactionController = new TransactionController();
