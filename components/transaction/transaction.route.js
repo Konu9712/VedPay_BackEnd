@@ -16,4 +16,18 @@ router.get(
   }
 );
 
+/**
+ * @route GET  api/transaction/:userId/global
+ * @description Get latest 30 transactions list of user
+ * @returns JSON
+ * @access public
+ */
+router.get(
+  "/:userId/global",
+  TransactionValidator.transactionGlobal,
+  (req, res) => {
+    TransactionController.transactionGlobal(req, res);
+  }
+);
+
 module.exports = router;

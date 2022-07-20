@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const User = require("../../database/Sechma/userSechma");
 const GlobalTransactionSechma = require("../../database/Sechma/globalTransactionSechma");
 const common = require("../../helper/common");
@@ -40,6 +41,32 @@ class TransactionService {
       return false;
     }
   };
+
+  transactionGlobal = async (userId) => {
+    const userglobalTransactionSechma = await GlobalTransactionSechma.findOne({
+      userId: userId,
+    }).then(function (response) {
+      if (response) {
+        console.log(
+          `User:- ${userId} checks the transaction global history  [Global Transaction  Sechma]`
+        );
+
+        return response;
+      } else {
+        console.log(
+          `Error in getting transaction global history of User:- ${userId} [Global Transaction  Sechma]`
+        );
+        return false;
+      }
+    });
+
+    let resultArray = [];
+    resultArray = userglobalTransactionSechma.transactionHistory
+      .reverse()
+      .slice(0, 50);
+    return resultArray;
+  };
 }
+
 const transactionService = new TransactionService();
 module.exports = transactionService;
