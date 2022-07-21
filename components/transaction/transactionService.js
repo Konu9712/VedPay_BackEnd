@@ -4,6 +4,14 @@ const User = require("../../database/Sechma/userSechma");
 const GlobalTransactionSechma = require("../../database/Sechma/globalTransactionSechma");
 const common = require("../../helper/common");
 
+const findReciver = async (reciver) => {
+  const reciverSechma = await User.findOne(
+    { userId: reciver },
+    { name: 1, phoneNumber: 1 }
+  );
+  return reciverSechma;
+};
+
 class TransactionService {
   transactionContact = async (userId, contactId) => {
     const userglobalTransactionSechma = await GlobalTransactionSechma.find({
@@ -42,7 +50,7 @@ class TransactionService {
     }
   };
 
-  transactionGlobal = async (userId) => {
+  transactionGlobal = async (userId, cardSechma) => {
     const userglobalTransactionSechma = await GlobalTransactionSechma.findOne({
       userId: userId,
     }).then(function (response) {
@@ -60,11 +68,28 @@ class TransactionService {
       }
     });
 
-    let resultArray = [];
-    resultArray = userglobalTransactionSechma.transactionHistory
+    let reverseList = [];
+    reverseList = userglobalTransactionSechma.transactionHistory
       .reverse()
       .slice(0, 50);
-    return resultArray;
+    let finalList = JSON.parse(JSON.stringify(reverseList));
+    for (var i = 0; i <= finalList.length; i++) {
+      if (finalList[i] && finalList[i].source === "card") {
+        const cardDetails = cardSechma.allCards.find(
+          (card) => card.cardId === finalList[i].from
+        );
+        finalList[i].cardDetails = cardDetails;
+      }
+      if (
+        finalList[i] &&
+        finalList[i].source === "wallet" &&
+        finalList[i].to !== userId
+      ) {
+        const reciver = await findReciver(finalList[i].to);
+        finalList[i].reciver = reciver;
+      }
+    }
+    return finalList;
   };
 }
 
