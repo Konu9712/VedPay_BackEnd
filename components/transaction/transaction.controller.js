@@ -66,6 +66,11 @@ class TransactionController {
       const { userId } = req.params;
 
       const userUserSechma = await User.findOne({ userId: userId });
+      const cardSechma = await Card.findOne(
+        { userId: userId },
+        { "allCards.cardId": 1, "allCards.cardNumber": 1 }
+      );
+
       if (isEmpty(userUserSechma)) {
         errors.error = "Invalid User";
       }
@@ -82,7 +87,10 @@ class TransactionController {
         });
       }
 
-      const result = await transactionService.transactionGlobal(userId);
+      const result = await transactionService.transactionGlobal(
+        userId,
+        cardSechma
+      );
       if (true) {
         return res.status(200).json({
           message: "ok",
