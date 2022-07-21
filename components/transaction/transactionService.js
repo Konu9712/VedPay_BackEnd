@@ -99,6 +99,19 @@ class TransactionService {
     }
     return finalList;
   };
+
+  cardTransaction = async (cardSechma, cardId) => {
+    let cardList = JSON.parse(JSON.stringify(cardSechma));
+    const selectedCard = cardList.allCards.find(
+      (element) => element.cardId == cardId
+    );
+    let transactionList = selectedCard.cardTransctions.reverse().slice(0, 30);
+    if (selectedCard) {
+      return transactionList;
+    } else {
+      return false;
+    }
+  };
 }
 
 const transactionService = new TransactionService();

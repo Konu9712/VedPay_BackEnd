@@ -30,4 +30,18 @@ router.get(
   }
 );
 
+/**
+ * @route GET  api/transaction/:userId/card/:cadId
+ * @description Get latest 30 transactions list of card
+ * @returns JSON
+ * @access public
+ */
+router.get(
+  "/:userId/card/:cardId",
+  TransactionValidator.cardTransaction,
+  (req, res) => {
+    TransactionController.cardTransaction(req, res);
+  }
+);
+
 module.exports = router;
