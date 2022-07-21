@@ -88,6 +88,14 @@ class TransactionService {
         const reciver = await findReciver(finalList[i].to);
         finalList[i].reciver = reciver;
       }
+      if (
+        finalList[i] &&
+        finalList[i].source === "wallet" &&
+        finalList[i].to === userId
+      ) {
+        const sender = await findReciver(finalList[i].from);
+        finalList[i].sender = sender;
+      }
     }
     return finalList;
   };
