@@ -37,4 +37,14 @@ router.delete(
   }
 );
 
+/**
+ * @route GET api/card/:userId/cardStats
+ * @description Get card transaction stats from DB
+ * @returns JSON
+ * @access public
+ */
+router.get("/:userId/cardStats", CardValidations.cardStats, (req, res) => {
+  CardController.cardStats(req, res);
+});
+
 module.exports = router;
