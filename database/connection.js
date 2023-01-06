@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const Key = require("dotenv").config();
 
-const DB = process.env.DB_KEY;
+// const DB = process.env.DB_KEY;
+const DB = "mongodb+srv://vedpay:vedpay123@cluster0.ehzuh.mongodb.net/?retryWrites=true&w=majority";
+
 try {
   mongoose.connect(
     DB,
